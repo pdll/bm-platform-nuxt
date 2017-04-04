@@ -1,0 +1,28 @@
+# dependencies
+node_modules
+
+# logs
+npm-debug.log
+
+# Nuxt build
+.nuxt
+
+# Nuxt generate
+dist
+
+node_modules
+node_modules/**
+.idea
+.idea/**
+.vscode
+.vscode/**
+npm-debug.log
+.sass-cache
+.sass-cache/**
+.DS_Store
+static/dist
+static/dist/**
+.nuxt
+.nuxt/**
+dist
+dist/**
