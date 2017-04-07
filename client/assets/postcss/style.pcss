@@ -37,6 +37,7 @@ body {
 }
 
 a {
+  color: #0c00ff;
   text-decoration: none;
 }
 
@@ -356,6 +357,14 @@ button {
       outline: none !important;
       box-shadow: none !important;
     }
+
+    &_textarea {
+      resize: auto;
+      height: auto;
+    }
+  }
+  &__fake-input {
+    padding: 0 20px 10px;
   }
   &__textarea {}
 }
@@ -636,10 +645,10 @@ button {
 
       &_like { background-image: svg("like", "[fill]: #dadee1;"); }
       &_comment { background-image: svg("comment", "[fill]: #dadee1;"); }
-
-      &:before {
-        content: attr(data-prefix);
-      }
+    }
+    
+    &:before {
+      content: attr(data-prefix);
     }
   }
 }
@@ -1345,5 +1354,88 @@ button {
     height: 185px;
 
     background: #000;
+  }
+}
+
+
+.nps-overall {
+  display: flex;
+  justify-content: space-between;
+
+  &__item {
+    padding: 0 14px;
+    text-align: center;
+  }
+
+  &__title {
+    font-size: 14px;
+    line-height: 14px;
+  }
+  &__value {
+    font-size: 28px;
+    line-height: 28px;
+  }
+}
+
+.rating-bar {
+  &_inline { display: inline-block; }
+
+}
+
+.nps-result {
+
+  &__row {
+    position: relative;
+  }
+  &__row-title {
+    font-size: 12px;
+    line-height: 28px;
+  }
+  &__row-value {
+    top: 0;
+    right: 0;
+    position: absolute;
+  }
+}
+
+.rating-star {
+  font-size: 21px;
+  line-height: 28px;
+
+  display: inline-block;
+}
+
+.pager {
+
+  &__btn {
+    transition: color $transition-time, border $transition-time, background $transition-time;
+    box-sizing: border-box;
+
+    height: 28px;
+    margin: 0 3.5px;
+    line-height: 14px;
+    padding: 7px 14px;
+    vertical-align: top;
+    display: inline-block;
+
+    color: #337ab7;
+    background-color: #fff;
+    border: 1px solid #ddd;
+
+    &:hover {
+      color: #23527c;
+      background-color: #eee;
+      border-color: #ddd;
+    }
+
+    &_control { margin: 0 14px; }
+  }
+  &__dots {
+    height: 28px;
+    margin: 0 14px;
+    line-height: 28px;
+    
+    vertical-align: top;
+    display: inline-block;
   }
 }

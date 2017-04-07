@@ -7,7 +7,7 @@
     <div :class="{ 'user-inline__body': true, 'user-inline__body_width_thin': subscribeButtons }">
       <div class="user-inline__title-block">
         <nuxt-link class="user-inline__title" :to="'/'">Юринов Степан</nuxt-link>
-        <span class="user-inline__when">позавчера</span>
+        <span class="user-inline__when" v-if="time"> {{ time }}</span>
       </div>
       <div class="user-inline__info">Машинная вышивка (нашивки, картины), дизайн-интерьеров, картины.</div>
     </div>
@@ -31,6 +31,7 @@
     },
     props: {
       money: { type: Number, default: null },
+      time: { type: String, default: 'позавчера' },
       subscribeButtons: { type: Boolean, default: false }
     }
   }

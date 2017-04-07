@@ -38,6 +38,7 @@ module.exports = {
   loading: { color: '#3B8070' },
   /* plugins */
   plugins: [
+    '~plugins/components.js',
     '~plugins/i18n.js',
     '~plugins/numeral.js'
   ],

@@ -3,7 +3,7 @@
     'panel__body': true,
     'panel__body_no_padding': noPadding,
     'panel__body_no_vertical-padding': noVerticalPadding,
-    'panel__body_no_vertical-padding': noHorizontalPadding,
+    'panel__body_no_horizontal-padding': noHorizontalPadding,
     [ 'panel__body_padding panel__body_padding_' + paddingClass ]: paddingClass
     }">
     <slot />
