@@ -33,6 +33,7 @@ export default (sequelize, DataTypes) => {
           Post.belongsTo(models.User, { foreignKey: 'user_id' })
           Post.hasMany(models.Tag, { foreignKey: 'post_id' })
           Post.hasMany(models.Like, { foreignKey: 'post_id' })
+          Post.hasMany(models.Comment, { foreignKey: 'post_id' })
           Post.hasMany(models.UserPost, { foreignKey: 'post_id' })
           Post.hasMany(models.TaskPost, { foreignKey: 'post_id' })
           Post.hasMany(models.ContentPost, { foreignKey: 'post_id' })

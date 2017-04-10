@@ -27,6 +27,10 @@
       "btn": "Пост"
     }
   },
+  "user-post": {
+    "fact": "Факт дня: %{value} ₽",
+    "task-reply": "Выполнение задания"
+  },
   "account": {
     "auth": {
       "login": {

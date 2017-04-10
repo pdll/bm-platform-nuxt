@@ -132,6 +132,10 @@ export default (sequelize, DataTypes) => {
       word_price: {
         type: DataTypes.STRING
       },
+      // type: {
+      //   defaultValue: 'user',
+      //   type: DataTypes.ENUM([ 'user', 'volunteer' ])
+      // }
       // all_programs: {
       //   type: DataTypes.BOOLEAN
       // }

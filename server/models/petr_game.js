@@ -25,6 +25,7 @@ export default (sequelize, DataTypes) => {
       classMethods: {
         associate: (models) => {
           PetrGame.belongsTo(models.PetrGameType, { foreignKey: 'type_id' })
+          PetrGame.hasMany(models.PetrGameEntry, { foreignKey: 'petr_game_entry_id' })
         }
       }
     }

@@ -16,6 +16,7 @@ module.exports = function (sequelize, DataTypes) {
         associate: (models) => {
           TaskReply.hasOne(models.UserPost, { foreignKey: 'reply_id' })
           TaskReply.belongsTo(models.User, { foreignKey: 'volunteer_id' })
+          TaskReply.belongsTo(models.TaskPost, { foreignKey: 'task_id' })
         }
       }
     }

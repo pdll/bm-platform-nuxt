@@ -1,6 +1,7 @@
 import 'babel-polyfill'
 import Koa from 'koa'
 import Nuxt from 'nuxt'
+import passport from 'koa-passport'
 
 import router from './routes'
 import config from '../nuxt.config.js'
@@ -26,6 +27,8 @@ app
   .use(bodyparser())
   .use(router.routes())
   .use(router.allowedMethods())
+  .use(passport.initialize())
+  .use(passport.session())
 
 // Build only in dev mode
 if (config.dev) {

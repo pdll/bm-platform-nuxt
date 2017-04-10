@@ -19,7 +19,7 @@ export default (sequelize, DataTypes) => {
       classMethods: {
         associate: (models) => {
           UserPost.belongsTo(models.Post, { foreignKey: 'post_id' })
-          UserPost.belongsTo(models.TaskReply, { foreignKey: 'reply_id' })
+          UserPost.belongsTo(models.TaskReply, { foreignKey: 'reply_id', as: 'ReplyTo' })
         }
       }
     }

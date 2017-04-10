@@ -10,8 +10,8 @@
         </div>
       </div>
     </panel>
-
-    <postsList />
+    
+    <postsList :list="posts" :keys="postKeys" />
 
     <!--<postsList
       v-if="!bm_tasks"
@@ -26,6 +26,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   import panel from '../../components/panel'
   import replyForm from '../../components/reply-form.vue'
   import postsList from '../../components/posts/list.vue'
@@ -35,10 +37,17 @@
     computed: {
       isCheckLinks: function () { return true },
       postsArray: function () { return [] },
-      emptyText: function () { return '12312' }
+      emptyText: function () { return '12312' },
+      ...mapState({
+        posts: state => state.feed.list,
+        postKeys: state => state.feed.keys
+      })
     },
     methods: {
       loadMore: function () {}
+    },
+    fetch ({ store }) {
+      return store.dispatch('feed/fetch', { params: {} })
     },
     data: ({ route }) => {
       console.log(route.path)

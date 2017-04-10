@@ -2,13 +2,8 @@
   <div id="posts_list" class="PostsList">
     <ul class="PostsList__summaries hfeed" itemScope itemType="http://schema.org/blogPosts">
       
-      <li v-for="post in items" :key="post.id">
-        <postPreview @expand="expandPost(post.id)" :title="'Заголовок поста ' + post.id" />
-        <!--:post="post"
-          :currentCategory="category"
-          :thumbSize="thumbSize"
-          :ignore="ignore"
-          :netVoteSign="netVoteSign"-->
+      <li v-for="key in keys" :key="key">
+        <postPreview @expand="expandPost(key)" :post="list[key]" />
       </li>
     </ul>
     
@@ -32,28 +27,6 @@
   import postPreview from './short.vue'
 
   export default {
-    computed: {
-      items: function () {
-        return [
-          {
-            id: 1231231,
-            title: 'Первый'
-          },
-          {
-            id: 3333333,
-            title: 'Второй'
-          },
-          {
-            id: 444444,
-            title: 'Третий'
-          },
-          {
-            id: 555555,
-            title: 'Четвертый'
-          }
-        ]
-      }
-    },
     methods: {
       expandPost: function (id) {
         this.showPost = id
@@ -74,7 +47,9 @@
     }),
     props: {
       category: { type: String, default: null },
-      loading: { type: Boolean, default: false }
+      loading: { type: Boolean, default: false },
+      keys: { type: Array, default: null },
+      list: { type: Object, default: null }
     },
     components: { userInlinePost, postPreview, postModal, comments, fullPost }
   }
