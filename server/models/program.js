@@ -35,7 +35,7 @@ export default (sequelize, DataTypes) => {
           Program.belongsToMany(models.Post, { through: 'programs_posts', foreignKey: 'program_id' })
 
           // В каждой программе участвует множество человек
-          Program.belongsToMany(models.Account, { through: models.User, foreignKey: 'program_id', as: 'Users' })
+          Program.hasMany(models.User, { foreignKey: 'program_id', as: 'Users' })
         }
       }
     }

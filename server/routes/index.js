@@ -28,7 +28,7 @@ router.bridge('/api', [ initRoutes ], router => {
   router.post('/', ctx => ctx.body = {})
 
   // apply account routes
-  router.bridge('/users', accountRoutes)
+  router.bridge('/account', accountRoutes)
 
   // apply feed routes
   router.bridge('/feed', feedRoutes)

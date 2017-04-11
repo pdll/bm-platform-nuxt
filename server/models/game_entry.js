@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const PetrGameEntry = sequelize.define(
-    'PetrGameEntry',
+  const GameEntry = sequelize.define(
+    'GameEntry',
     {
       data: {
         type: DataTypes.JSON
@@ -11,19 +11,19 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      tableName: 'petr_games_entry',
+      tableName: 'games_entry',
       createdAt: 'created_at',
       updatedAt: 'updated_at',
       timestamps: true,
       underscored: true,
       classMethods: {
         associate: (models) => {
-          PetrGameEntry.belongsTo(models.User, { foreignKey: 'user_id' })
-          PetrGameEntry.belongsTo(models.PetrGame, { foreignKey: 'petr_game_entry_id' })
+          GameEntry.belongsTo(models.User, { foreignKey: 'user_id' })
+          GameEntry.belongsTo(models.Game, { foreignKey: 'game_id' })
         }
       }
     }
   )
 
-  return PetrGameEntry
+  return GameEntry
 }

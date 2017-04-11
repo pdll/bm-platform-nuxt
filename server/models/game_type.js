@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const PetrGameType = sequelize.define(
-    'PetrGameType',
+  const GameType = sequelize.define(
+    'GameType',
     {
       name: {
         type: DataTypes.STRING
@@ -17,18 +17,18 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      tableName: 'petr_games_type',
+      tableName: 'games_type',
       createdAt: 'created_at',
       updatedAt: 'updated_at',
       timestamps: true,
       underscored: true,
       classMethods: {
         associate: (models) => {
-          PetrGameType.hasMany(models.PetrGame, { foreignKey: 'type_id' })
+          GameType.hasMany(models.Game, { foreignKey: 'game_type_id' })
         }
       }
     }
   )
 
-  return PetrGameType
+  return GameType
 }

@@ -30,6 +30,9 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
+          User.belongsTo(models.Program, { foreignKey: 'program_id' })
+          User.belongsTo(models.Account, { foreignKey: 'account_id' })
+
           // пользователь может написать пост
           User.hasMany(models.Post, { foreignKey: 'user_id' })
 

@@ -39,7 +39,8 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
-          Account.belongsToMany(models.Program, { through: models.User, foreignKey: 'account_id', as: 'Users' })
+          Account.hasMany(models.User, { foreignKey: 'account_id', as: 'Users' })
+          Account.hasMany(models.UserActivation, { foreignKey: 'account_id', as: 'Activations' })
         }
 		  }
 	  }
