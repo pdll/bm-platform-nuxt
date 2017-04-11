@@ -22,10 +22,21 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
+          // todo узнать только ли к постам могут оставляться комментарии
+          // комментарий может принадлежать посту
           Comment.belongsTo(models.Post, { foreignKey: 'post_id' })
+
+          // Комментарий оставляется пользователем
           Comment.belongsTo(models.User, { foreignKey: 'user_id' })
+          
+          // Комментарий может являться дочерним комментарием
           Comment.belongsTo(Comment, { foreignKey: 'parent_id' })
+
+          // Комментарий может иметь множество дочерних коментариев
           Comment.hasMany(Comment, { foreignKey: 'parent_id' })
+
+          // Комментарий может иметь много лайков
+          Comment.belongsToMany(models.Like, { foreignKey: 'comment_id', as: 'Likes', through: 'likes_comments' })
         }
       }
     }

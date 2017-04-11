@@ -23,6 +23,7 @@ export default (sequelize, DataTypes) => {
     underscored: true,
     classMethods: {
       associate: (models) => {
+        // feedback is send by user
         Feedback.belongsTo(models.User, { foreignKey: 'user_id' })
       }
     }

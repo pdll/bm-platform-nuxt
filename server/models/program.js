@@ -17,6 +17,10 @@ export default (sequelize, DataTypes) => {
       finish_at: {
         allowNull: false,
         type: DataTypes.DATE
+      },
+      is_enabled: {
+        defaultValue: true,
+        type: DataTypes.BOOLEAN
       }
     },
     {
@@ -27,8 +31,11 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
+          // В каждой программе может быть много постов
           Program.belongsToMany(models.Post, { through: 'programs_posts', foreignKey: 'program_id' })
-          Program.belongsToMany(models.User, { through: 'programs_users', foreignKey: 'program_id' })
+
+          // В каждой программе участвует множество человек
+          Program.belongsToMany(models.Account, { through: models.User, foreignKey: 'program_id', as: 'Users' })
         }
       }
     }

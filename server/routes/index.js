@@ -2,152 +2,36 @@ import _ from 'lodash'
 import koaRouter from 'koa-router'
 import bridge from 'koa-router-bridge'
 
-import { orm, models } from '../models'
+// orm instance
+import { orm } from '../models'
+
+// routes
+import feedRoutes from './feed'
+import accountRoutes from './account'
 
 let Router = bridge(koaRouter)
 let router = new Router()
 
-orm.sync().then(res => {
-  // console.log(models)
-})
+orm
+  .sync()
+  .then(res => {})
+  .catch(err => console.log(err))
 
-router.bridge('/api', router => {
-  router.bridge('/users', router => {
-    router.get('/list', async ctx => {
-      console.log(ctx.query)
-      let data = await models.User.findAll({
-        attributes: [ 'name', 'id', 'email' ]
-      })
+const initRoutes = async (ctx, next) => {
+  if (!ctx.__) ctx.__ = {}
+  await next()
+}
 
-      ctx.body = { data }
-    })
+router.bridge('/api', [ initRoutes ], router => {
+  // restrict default routes
+  router.get('/', ctx => ctx.body = {})
+  router.post('/', ctx => ctx.body = {})
 
-    router.get('/:user', ctx => {
-      ctx.body = { param: ctx.params }
-    })
-  })
+  // apply account routes
+  router.bridge('/users', accountRoutes)
 
-  router.bridge('/feed', router => {
-    router.get('/all', async ctx => {
-      // let { programs = [] } = ctx.session
-      // let ids = []
-
-      // programs.map(el => ids.push(el.id))
-
-      let rawResult = await models.UserPost.findAll({
-        attributes: [ 'post_id', 'money_fact' ],
-        include: [
-          {
-            model: models.Post,
-            attributes: [ 'title', 'type', 'content' ],
-            include: [
-              {
-                model: models.Program,
-                // where: {
-                //   id: { $in: ids }
-                // },
-                through: {
-                  attributes: []
-                }
-              },
-              {
-                required: false,
-                attributes: [ 'id' ],
-                model: models.Like,
-                group: [ 'post_id' ]
-              },
-              {
-                required: false,
-                model: models.Comment,
-                attributes: [ 'id' ]
-              },
-              {
-                model: models.User,
-                attributes: [ 'name', 'email', 'id' ] 
-              }
-            ]
-          },
-          {
-            as: 'ReplyTo',
-            required: false,
-            model: models.TaskReply,
-            attributes: [ 'status' ],
-            include: [
-              {
-                required: false,
-                model: models.TaskPost,
-                include: [ models.Post ]
-              },
-              {
-                model: models.User,
-                attributes: [ 'name' ]
-              }
-            ]
-          }
-        ]
-      })
-
-      let result = []
-
-      rawResult.map(el => {
-        el = el.toJSON()
-        el.like_count = el.Post.Likes ? el.Post.Likes.length : 0
-        el.comment_count = el.Post.Comments ? el.Post.Comments.length : 0
-        result.push(el)
-      })
-      
-      ctx.body = { result }
-    })
-  })
-
-  router.bridge('/auth', router => {
-    router.get('/', async ctx => {
-      let credentials = _.pick(ctx.request.query, [ 'name', 'password' ])
-
-      if (!credentials.name) {
-        ctx.status = 403
-        ctx.body = { error: 'Invalid credentials' }
-        return
-      }
-
-      // if (ctx.session.user && ctx.session.user.name === credentials.name) {
-      //   ctx.body = {
-      //     error: 'already logged in',
-      //     user: ctx.session.user
-      //   }
-      //   return
-      // }
-
-      let rawUser = await models.User.findOne({
-        where: {
-          name: credentials.name
-        },
-        attributes: [ 'name', 'email', 'id' ],
-        include: [
-          {
-            model: models.Program,
-            attributes: [ 'title', 'alias', 'id' ],
-            through: {
-              attributes: []
-            }
-          }
-        ]
-      })
-
-      let user = _.pick(rawUser, [ 'name', 'emaul', 'id' ])
-      let programs = rawUser.Programs || []
-
-      ctx.session = Object.assign({}, ctx.session, { user, programs })
-
-      ctx.body = { user, programs }
-    })
-  })
-
-  router.bridge('/account', router => {
-    router.get('info', ctx => {
-      ctx.body = {}
-    })
-  })
+  // apply feed routes
+  router.bridge('/feed', feedRoutes)
 })
 
 router.bridge('/session', router => {

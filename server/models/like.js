@@ -10,8 +10,14 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
-          Like.belongsTo(models.Post, { foreignKey: 'post_id' })
+          // Лайк ставится пользователем
           Like.belongsTo(models.User, { foreignKey: 'user_id' })
+
+          // Лайк ставится посту
+          Like.belongsToMany(models.Post, { foreignKey: 'like_id', as: 'Posts', through: 'likes_posts' })
+
+          // либо коментарию
+          Like.belongsToMany(models.Comment, { foreignKey: 'like_id', as: 'Comments', through: 'likes_comments' })
         }
       }
     }
