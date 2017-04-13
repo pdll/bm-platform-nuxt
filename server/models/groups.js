@@ -18,8 +18,17 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
-          Group.belongsToMany(models.User, { through: 'user_groups', foreignKey: 'group_id', as: 'Users' })
+          // В группе есть много людей
+          Group.belongsToMany(models.User, { through: 'users_groups', foreignKey: 'group_id', as: 'Users' })
+          
+          // у группы есть лидер
           Group.belongsTo(models.User, { foreignKey: 'leader_id', as: 'Leader' })
+
+          // группа может принадлежать программе
+          Group.belongsTo(models.Program, { foreignKey: 'program_id', as: 'Program' })
+
+          // у группы может быть рейтинг
+          Group.belongsToMany(models.NPS, { through: 'nps_group', foreignKey: 'group_id', as: 'Nps' })
         }
       }
     }

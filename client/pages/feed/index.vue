@@ -11,7 +11,7 @@
       </div>
     </panel>
     
-    <postsList :list="posts" :keys="postKeys" />
+    <postsList :list="feed" />
 
     <!--<postsList
       v-if="!bm_tasks"
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import { mapState } from 'vuex'
 
   import panel from '../../components/panel'
@@ -46,18 +47,29 @@
     methods: {
       loadMore: function () {}
     },
-    fetch ({ store }) {
-      return store.dispatch('feed/fetch', { params: {} })
-    },
-    data: ({ route }) => {
-      console.log(route.path)
-      return {
-        fetching: false,
-        logged: true,
-        bm_tasks: false,
-        category: 'all',
-        showSpam: false
-      }
+    // fetch ({ store }) {
+    // },
+    data: ({ route, error }) => {
+      return axios.get('http://localhost:3000/api/feed/list')
+        .then(({ data, status }) => {
+          let { feed } = data
+          return {
+            feed,
+            fetching: false,
+            logged: true,
+            bm_tasks: false,
+            category: 'all',
+            showSpam: false
+          }
+        })
+        .catch(err => error({ statusCode: 500, message: err.message }))
+      // return {
+        // fetching: false,
+        // logged: true,
+        // bm_tasks: false,
+        // category: 'all',
+        // showSpam: false
+      // }
     },
     components: { postsList, replyForm, panel }
   }

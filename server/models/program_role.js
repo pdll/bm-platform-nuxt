@@ -1,31 +1,30 @@
 export default (sequelize, DataTypes) => {
 
-	const Role = sequelize.define(
-    'Role', 
+	const ProgramRole = sequelize.define(
+    'ProgramRole', 
     {
       name: {
         allowNull: false,
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
       },
       is_enabled: {
         defaultValue: true,
         type: DataTypes.BOOLEAN
       }
-    }, 
+    },
     {
-      tableName: 'roles',
+      tableName: 'program_roles',
       createdAt: 'created_at',
       updatedAt: 'updated_at',
       timestamps: true,
       underscored: true,
       classMethods: {
         associate: (models) => {
-          Role.hasMany(models.User, { foreignKey: 'role_id' })
+          ProgramRole.belongsToMany(models.User, { through: models.UserProgramRole, foreignKey: 'program_role_id' })
         }
       }
-	  }
+    }
   )
 
-	return Role
-
+  return ProgramRole
 }

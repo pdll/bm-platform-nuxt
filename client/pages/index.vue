@@ -7,7 +7,7 @@
 <script>
   export default {
     mounted () {
-      if (this.$route.name === 'index') this.$router.replace({ name: 'feed' })
+      // if (this.$route.name === 'index') this.$router.replace({ name: 'feed' })
     }
   }
 </script>

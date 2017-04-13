@@ -7,12 +7,44 @@ const initMiddleware = async (ctx, next) => {
 }
 
 const testFeedMethod = async ctx => {
-  ctx.body = { hello: ctx.__.program || 'no program' }
+  
+}
+
+const getUserFeed = async ctx => {
+  let user = ctx.__.currentUser
+
+  let rawFeed = await models.Post.findAll({
+    attributes: [ 'title', 'content', 'created_at' ],
+    where: {
+      is_blocked: false,
+      is_visible: true,
+      type: 'user'
+    },
+    include: [
+      {
+        model: models.User,
+        attributes: [ 'name', 'first_name', 'last_name', 'id' ],
+        include: [
+          {
+            attributes: [ 'a', 'b', 'id', 'occupation' ],
+            model: models.Goal,
+            where: {
+              is_closed: false
+            }
+          }
+        ]
+      }
+    ]
+  })
+
+  ctx.body = {
+    feed: rawFeed
+  }
 }
 
 export default {
   initMiddleware,
-  testFeedMethod
+  getUserFeed
 }
 
 // const getUserFeed = async ctx => {

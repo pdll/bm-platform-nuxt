@@ -7,10 +7,6 @@ export default (sequelize, DataTypes) => {
         field: 'post_id',
         type: DataTypes.INTEGER,
         references: { model: 'posts', key: 'id' }
-      },
-      money_fact: {
-        defaultValue: 0,
-        type: DataTypes.INTEGER
       }
     },
     {
@@ -19,7 +15,7 @@ export default (sequelize, DataTypes) => {
       classMethods: {
         associate: (models) => {
           UserPost.belongsTo(models.Post, { foreignKey: 'post_id' })
-          UserPost.belongsTo(models.TaskReply, { foreignKey: 'reply_id', as: 'ReplyTo' })
+          UserPost.belongsTo(models.TaskReply, { foreignKey: 'task_reply_id', as: 'ReplyTo' })
         }
       }
     }

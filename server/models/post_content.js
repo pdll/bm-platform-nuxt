@@ -8,10 +8,6 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         references: { model: 'posts', key: 'id' }
       },
-      rating: {
-        defaultValue: 0,
-        type: DataTypes.FLOAT
-      },
       price: {
         defaultValue: 0,
         type: DataTypes.INTEGER

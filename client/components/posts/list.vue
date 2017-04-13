@@ -1,11 +1,10 @@
 <template>
   <div id="posts_list" class="PostsList">
     <ul class="PostsList__summaries hfeed" itemScope itemType="http://schema.org/blogPosts">
-      
-      <li v-for="key in keys" :key="key">
-        <postPreview @expand="expandPost(key)" :post="list[key]" />
+      <li v-for="item in list" :key="item.id">
+        <postPreview @expand="expandPost(item.id)" :post="item" />
       </li>
-    </ul>
+    </ul>    
     
     <center v-if="loading"><LoadingIndicator type="circle" /></center>
 
@@ -48,8 +47,7 @@
     props: {
       category: { type: String, default: null },
       loading: { type: Boolean, default: false },
-      keys: { type: Array, default: null },
-      list: { type: Object, default: null }
+      list: { type: Array, default: () => ([]) }
     },
     components: { userInlinePost, postPreview, postModal, comments, fullPost }
   }

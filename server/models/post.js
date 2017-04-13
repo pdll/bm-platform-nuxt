@@ -20,6 +20,10 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 'user',
         type: DataTypes.STRING
+      },
+      views: {
+        defaultValue: 0,
+        type: DataTypes.INTEGER
       }
     },
     {
@@ -55,7 +59,7 @@ export default (sequelize, DataTypes) => {
           Post.belongsToMany(models.Program, { through: 'programs_posts', foreignKey: 'post_id' })
 
           // Посту может быть выставлена куча оценок
-          Post.belongsToMany(models.NPS, { through: 'nps_posts', foreignKey: 'post_id' })
+          Post.belongsToMany(models.NPS, { through: 'nps_posts', foreignKey: 'post_id', as: 'Nps' })
         }
       }
     }

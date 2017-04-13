@@ -3,23 +3,32 @@ export default (sequelize, DataTypes) => {
 	const User = sequelize.define(
     'User', 
     {
-      id: {
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
+      name: {
+        type: DataTypes.STRING
+      },
+      email: {
+        type: DataTypes.STRING, unique: true
+      },
+      first_name: {
+        type: DataTypes.STRING
+      },
+      last_name: {
+        type: DataTypes.STRING
+      },
+      birthday: {
+        type: DataTypes.DATE
+      },
+      gender: {
+        type: DataTypes.ENUM([ 'male', 'female' ])
+      },
+      locale: {
+        type: DataTypes.STRING(12)
+      },
+      timezone: {
         type: DataTypes.INTEGER
       },
-      money_total: {
-        type: DataTypes.INTEGER
-      },
-      money_confirmed: {
-        type: DataTypes.INTEGER
-      },
-      point_a: {
-        type: DataTypes.INTEGER
-      },
-      point_b: {
-        type: DataTypes.INTEGER
+      remote_ip: {
+        type: DataTypes.STRING
       }
     }, 
     {
@@ -30,8 +39,8 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
-          User.belongsTo(models.Program, { foreignKey: 'program_id' })
-          User.belongsTo(models.Account, { foreignKey: 'account_id' })
+          // Юзер может участвовать в множестве програм
+          User.belongsToMany(models.Program, { foreignKey: 'user_id', as: 'Program', through: models.UserProgram })
 
           // пользователь может написать пост
           User.hasMany(models.Post, { foreignKey: 'user_id' })
@@ -41,15 +50,33 @@ export default (sequelize, DataTypes) => {
 
           // пользователь может оставить комментарий
           User.hasMany(models.Comment, { foreignKey: 'user_id' })
-          
-          // У пользователя может быть много отметок с оценкой
-          User.belongsToMany(models.NPS, { through: 'nps_users', foreignKey: 'user_id' })
-          
-          // Пользователь может иметь несколько полей в рамках программы
-          User.belongsToMany(models.Role, { through: models.UserRole, foreignKey: 'user_id', as: 'Role' })
+
+          // Пользователь может поставить себе цель
+          User.hasMany(models.Goal, { foreignKey: 'user_id' })
 
           // Пользователь может состоять в нескольких группах
           User.belongsToMany(models.Group, { through: 'user_groups', foreignKey: 'user_id', as: 'Groups' })
+
+          // Пользователь может быть лидером групп
+          User.hasMany(models.Group, { foreignKey: 'leader_id', as: 'GroupsLeader' })
+          
+          // У пользователя может быть много отметок с оценкой
+          User.belongsToMany(models.NPS, { through: 'nps_users', foreignKey: 'user_id', as: 'Nps' })
+
+          //
+          User.hasMany(models.NPS, { foreignKey: 'user_id', as: 'NpsAuthor' })
+
+          // Юзер может быть автором многих заданий
+          User.hasMany(models.TaskEntry, { foreignKey: 'user_id' })
+          
+          // Пользователь имееют одну роль глобальную
+          User.belongsTo(models.Role, { foreignKey: 'role_id' })
+
+          // пользователь может иметь много ролей в программах
+          User.belongsToMany(models.ProgramRole, { through: models.UserProgramRole, foreignKey: 'user_id', as: 'ProgramRoles' })
+
+          // У пользователя есть доход
+          User.hasMany(models.Income, { foreignKey: 'user_id' })
         }
       }
 	  }

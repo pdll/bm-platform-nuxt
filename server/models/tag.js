@@ -20,6 +20,8 @@ export default (sequelize, DataTypes) => {
         associate: (models) => {
           // Тег принадлежит посту
           Tag.belongsToMany(models.Post, { foreignKey: 'tag_id', as: 'Posts', through: 'tags_posts' })
+
+          Tag.belongsToMany(models.Task, { foreignKey: 'tag_id', as: 'Tasks', through: 'tags_tasks' })
         }
       }
     }
