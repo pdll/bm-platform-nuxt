@@ -35,13 +35,13 @@ export default (sequelize, DataTypes) => {
           Program.belongsToMany(models.Post, { through: 'programs_posts', foreignKey: 'program_id' })
 
           // В каждой программе участвует множество человек
-          Program.belongsToMany(models.User, { foreignKey: 'program_id', as: 'Users', through: models.UserProgram })
+          Program.belongsToMany(models.User, { foreignKey: 'program_id', through: models.UserProgram })
 
           // В программе могут быть занятия
           Program.hasMany(models.ProgramClass, { foreignKey: 'program_id', as: 'Classes' })
 
           // группа может принадлежать программе
-          Program.hasMany(models.Group, { foreignKey: 'program_id', as: 'Groups' })
+          Program.belongsToMany(models.Group, { foreignKey: 'program_id', as: 'Groups', through: 'programs_groups' })
 
           // ПРограмме выставляют оценки
           Program.belongsToMany(models.NPS, { through: 'nps_program', foreignKey: 'program_id', as: 'Nps' })

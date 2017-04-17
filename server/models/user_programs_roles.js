@@ -18,6 +18,8 @@ export default (sequelize, DataTypes) => {
         associate: (models) => {
           // запись принадлежит программе
          UserProgramRole.belongsTo(models.Program, { foreignKey: 'program_id' }) 
+         UserProgramRole.belongsTo(models.User, { foreignKey: 'user_id' })
+         UserProgramRole.belongsTo(models.ProgramRole, { foreignKey: 'program_role_id' })
         }
       }
     }

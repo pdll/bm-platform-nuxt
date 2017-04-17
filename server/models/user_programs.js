@@ -24,7 +24,13 @@ export default (sequelize, DataTypes) => {
       timestamps: true,
       underscored: true,
       classMethods: {
-        associate: (models) => {}
+        associate: (models) => {
+          UserProgram.belongsTo(models.City, { foreignKey: 'city_id' })
+
+          UserProgram.belongsTo(models.Program, { foreignKey: 'program_id' })
+
+          UserProgram.belongsTo(models.User, { foreignKey: 'user_id' })
+        }
       }
     }
   )

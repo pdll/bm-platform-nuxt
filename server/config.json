@@ -5,5 +5,12 @@
     "database": "bm_platform",
     "host": "127.0.0.1",
     "dialect": "mysql"
-  }
+  },
+  "oldDb": {
+    "username": "root",
+    "password": "",
+    "database": "steemit_dev",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }  
 }

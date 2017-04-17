@@ -14,8 +14,11 @@ export default (sequelize, DataTypes) => {
       score_3: {
         type: DataTypes.INTEGER
       },
-      comment: {
+      body: {
         type: DataTypes.TEXT
+      },
+      migration_id: {
+        type: DataTypes.INTEGER
       }
     },
     {
@@ -30,10 +33,10 @@ export default (sequelize, DataTypes) => {
           NPS.belongsTo(models.User, { foreignKey: 'user_id' })
 
           // Запись рейтинга может быть привязана к пользователю
-          NPS.belongsToMany(models.User, { through: 'nps_users', foreignKey: 'nps_id', as: 'UsersNps' })
+          NPS.belongsToMany(models.User, { through: 'nps_users', foreignKey: 'nps_id', as: 'UserNps' })
 
           // Запись рейтинга может быть привязана к посту
-          NPS.belongsToMany(models.Post, { through: 'nps_posts', foreignKey: 'nps_id', as: 'PostsNps' })
+          NPS.belongsToMany(models.Post, { through: 'nps_posts', foreignKey: 'nps_id', as: 'PostNps' })
 
           // Запись рейтинга может быть привязана к занятию программы
           NPS.belongsToMany(models.ProgramClass, { through: 'nps_classes', foreignKey: 'nps_id', as: 'ProgramClassNps' })
@@ -43,6 +46,8 @@ export default (sequelize, DataTypes) => {
 
           // Запись рейтинга может быть привязана к занятию программы
           NPS.belongsToMany(models.Group, { through: 'nps_group', foreignKey: 'nps_id', as: 'GroupNps' })
+
+          NPS.hasMany(models.NPS, { foreignKey: 'nps_id', as: 'PlatformNps' })
         }
       }
     }

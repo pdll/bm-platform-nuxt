@@ -8,6 +8,21 @@ export default (sequelize, DataTypes) => {
       is_blocked: {
         defaultValue: false,
         type: DataTypes.BOOLEAN
+      },
+      money: {
+        defaultValue: 0,
+        type: DataTypes.BIGINT
+      },
+      total_score: {
+        type: DataTypes.DOUBLE
+      },
+      migration_id: {
+        unique: true,
+        type: DataTypes.INTEGER
+      },
+      type: {
+        defaultvalue: null,
+        type: DataTypes.ENUM([ 'game', 'coach' ])
       }
     },
     {
@@ -25,7 +40,7 @@ export default (sequelize, DataTypes) => {
           Group.belongsTo(models.User, { foreignKey: 'leader_id', as: 'Leader' })
 
           // группа может принадлежать программе
-          Group.belongsTo(models.Program, { foreignKey: 'program_id', as: 'Program' })
+          Group.belongsToMany(models.Program, { foreignKey: 'group_id', as: 'Programs', through: 'programs_groups' })
 
           // у группы может быть рейтинг
           Group.belongsToMany(models.NPS, { through: 'nps_group', foreignKey: 'group_id', as: 'Nps' })

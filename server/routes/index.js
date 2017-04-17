@@ -5,8 +5,10 @@ import bcrypt from 'bcrypt-nodejs'
 
 // orm instance
 import { orm, models } from '../models'
+import { ormOld, migrations } from '../oldDb'
 
 // routes
+import npsRoutes from './nps'
 import feedRoutes from './feed'
 import accountRoutes from './account'
 
@@ -16,43 +18,19 @@ let router = new Router()
 orm
   .sync()
   .then(async res => {
-    let defaultUser = await models.User.findOne({
-      where: { email: 'paperdoll.msk@gmail.com' }
-    })
-
-    let defaultProgram = await models.Program.findOne({
-      where: { alias: 'ceh-23' }
-    })
-
-    if (!defaultUser) {
-      defaultUser = await models.User.create({
-        name: 'bm-paperdoll',
-        first_name: 'Stepan',
-        last_name: 'Yurinov',
-        gender: 'male',
-        email: 'paperdoll.msk@gmail.com'
-      })
-
-      defaultUser.save()
-    }
-
-    if (!defaultProgram) {
-      defaultProgram = await models.Program.create({
-        title: 'ЦЕХ 23',
-        alias: 'ceh-23',
-        start_at: Date.now(),
-        finish_at: Date.now()
-      })
-
-      defaultProgram.save()
-    }
+    // await migrations.programs(ormOld, models)
+    // await migrations.roles(ormOld, models)
+    // await migrations.cities(ormOld, models)
+    // await migrations.users(ormOld, models)
+    // await migrations.gameGroups(ormOld, models)
+    // await migrations.feedback(ormOld)
   })
   .catch(err => console.log(err))
 
 const initRoutes = async (ctx, next) => {
   if (!ctx.__) ctx.__ = {}
 
-  let User = models.User.findOne({
+  let User = await models.User.findOne({
     where: { id: 1 }
   })
 
@@ -72,73 +50,10 @@ router.bridge('/api', [ initRoutes ], router => {
   // apply feed routes
   router.bridge('/feed', feedRoutes)
 
+  router.bridge('/nps', npsRoutes)
+
   router.bridge('/users', router => {
-    router.get('/list', async ctx => {
-      let users = await models.User.findAll({
-        attributes: [ 'id', 'name', 'first_name', 'last_name' ]
-      })
-
-      ctx.status = 200
-      ctx.body = { users, ok: true }
-    })
-
-    router.bridge('/program', router => {
-
-      router.bridge('/activation', router => {
-        router.post('/', async ctx => {
-          let { hash, confirmation } = ctx.request.body
-
-          let userProgram = await models.Program.findOne({
-            attributes: [ 'title', 'alias' ],
-            include: [
-              {
-                required: true,
-                as: 'Users',
-                attributes: [ 'name', 'first_name', 'last_name' ],
-                model: models.User,
-                through: {
-                  required: true,
-                  where: { hash, is_activated: false }
-                }
-              }
-            ]
-          })
-
-          if (confirmation && userProgram) {
-            let up = userProgram.get('Users')[0].UserProgram
-
-            await up.update({
-              is_activated: true,
-              activated_at: Date.now()
-            })
-          }
-
-          ctx.body = { program: userProgram || null }
-        })
-      })      
-
-      router.post('/register', async ctx => {
-        let { program_id, user_id } = ctx.request.body        
-        
-        let result = await models.UserProgram.findOne({
-          where: {
-            user_id,
-            program_id
-          }
-        })
-
-        if (!result) {
-          result = await models.UserProgram.create({
-            program_id,
-            user_id,
-            hash: bcrypt.hashSync(program_id + '-' + user_id + '-' + Date.now())
-          })
-          ctx.body = { result }
-        } else {
-          ctx.body = { message: 'Уже зарегистрирован' }
-        }        
-      })
-    })
+    
   })
 })
 

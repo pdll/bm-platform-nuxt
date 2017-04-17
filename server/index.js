@@ -31,18 +31,18 @@ app
   .use(passport.session())
 
 // Build only in dev mode
-if (config.dev) {
-  nuxt.build()
-  .catch((error) => {
-    console.error(error) // eslint-disable-line no-console
-    process.exit(1)
-  })
-}
+// if (config.dev) {
+//   nuxt.build()
+//   .catch((error) => {
+//     console.error(error) // eslint-disable-line no-console
+//     process.exit(1)
+//   })
+// }
 
 app.use(async (ctx, next) => {
   ctx.status = 200
   ctx.req.session = ctx.session
-  await nuxt.render(ctx.req, ctx.res)
+  // await nuxt.render(ctx.req, ctx.res)
 })
 
 app.listen(config.env.port || 3000)

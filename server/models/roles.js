@@ -4,8 +4,9 @@ export default (sequelize, DataTypes) => {
     'Role', 
     {
       name: {
+        unique: true,
         allowNull: false,
-        type: DataTypes.INTEGER
+        type: DataTypes.STRING
       },
       is_enabled: {
         defaultValue: true,

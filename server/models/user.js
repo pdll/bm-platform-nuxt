@@ -29,6 +29,19 @@ export default (sequelize, DataTypes) => {
       },
       remote_ip: {
         type: DataTypes.STRING
+      },
+      uid: {
+        unique: true,
+        type: DataTypes.STRING(64)
+      },
+      picture_small: {
+        type: DataTypes.STRING(255)
+      },
+      picture_large: {
+        type: DataTypes.STRING(255)
+      },
+      migration_id: {
+        type: DataTypes.INTEGER
       }
     }, 
     {
@@ -40,7 +53,7 @@ export default (sequelize, DataTypes) => {
       classMethods: {
         associate: (models) => {
           // Юзер может участвовать в множестве програм
-          User.belongsToMany(models.Program, { foreignKey: 'user_id', as: 'Program', through: models.UserProgram })
+          User.belongsToMany(models.Program, { foreignKey: 'user_id', through: models.UserProgram })
 
           // пользователь может написать пост
           User.hasMany(models.Post, { foreignKey: 'user_id' })
@@ -55,7 +68,7 @@ export default (sequelize, DataTypes) => {
           User.hasMany(models.Goal, { foreignKey: 'user_id' })
 
           // Пользователь может состоять в нескольких группах
-          User.belongsToMany(models.Group, { through: 'user_groups', foreignKey: 'user_id', as: 'Groups' })
+          User.belongsToMany(models.Group, { through: 'users_groups', foreignKey: 'user_id', as: 'Groups' })
 
           // Пользователь может быть лидером групп
           User.hasMany(models.Group, { foreignKey: 'leader_id', as: 'GroupsLeader' })
@@ -73,7 +86,7 @@ export default (sequelize, DataTypes) => {
           User.belongsTo(models.Role, { foreignKey: 'role_id' })
 
           // пользователь может иметь много ролей в программах
-          User.belongsToMany(models.ProgramRole, { through: models.UserProgramRole, foreignKey: 'user_id', as: 'ProgramRoles' })
+          User.hasMany(models.ProgramRole, { foreignKey: 'user_id', as: 'ProgramRoles' })
 
           // У пользователя есть доход
           User.hasMany(models.Income, { foreignKey: 'user_id' })

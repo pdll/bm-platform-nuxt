@@ -4,6 +4,7 @@ export default (sequelize, DataTypes) => {
     'ProgramRole', 
     {
       name: {
+        unique: true,
         allowNull: false,
         type: DataTypes.STRING
       },
@@ -20,7 +21,8 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
-          ProgramRole.belongsToMany(models.User, { through: models.UserProgramRole, foreignKey: 'program_role_id' })
+          ProgramRole.hasMany(models.ProgramRole, { foreignKey: 'program_role_id' })
+
         }
       }
     }
