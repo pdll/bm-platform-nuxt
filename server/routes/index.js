@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt-nodejs'
 
 // orm instance
 import { orm, models } from '../models'
-import { ormOld, migrations } from '../oldDb'
+import { ormOld, migrations } from '../migrations'
 
 // routes
 import npsRoutes from './nps'
@@ -63,7 +63,7 @@ const migrate = async () => {
   /**
    * Третья волна миграций
    */
-  // await migrations.feedback(ormOld)
+  await migrations.feedback(ormOld)
 }
 
 orm.sync()

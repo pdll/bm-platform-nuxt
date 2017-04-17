@@ -67,10 +67,10 @@ export default (sequelize, DataTypes) => {
           
 
           // пост может быть постом пользователя
-          Post.hasOne(models.UserPost, { foreignKey: 'post_id' })
+          // Post.hasOne(models.UserPost, { foreignKey: 'post_id' })
 
           // либо пост может быть постом с материалоами
-          Post.hasOne(models.ContentPost, { foreignKey: 'post_id' })
+          // Post.hasOne(models.ContentPost, { foreignKey: 'post_id' })
         }
       }
     }
