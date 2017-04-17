@@ -1,4 +1,15 @@
 export default (sequelize, DataTypes) => {
+  /*
+    Модель описывает посты.
+    Пока что описаны базовые поля поста. Потом будет расширять.
+
+    У поста есть два типа
+      1. user - пост пользователя. 
+      2. content - платные материалы
+
+    Пост может принадлежать нескольким программам сразу. 
+    Посты без программы показываются всем пользователям, независимо от программ, в которых они участвуют.
+  */
   const Post = sequelize.define(
     'Post',
     {
@@ -8,6 +19,7 @@ export default (sequelize, DataTypes) => {
       content: {
         type: DataTypes.TEXT
       },
+      // флаг блокировки. Вместо удаления записи - блокировать. Так созранится целостность и статистика
       is_blocked: {
         defaultValue: false,
         type: DataTypes.BOOLEAN
@@ -19,7 +31,7 @@ export default (sequelize, DataTypes) => {
       type: {
         allowNull: false,
         defaultValue: 'user',
-        type: DataTypes.STRING
+        type: DataTypes.ENUM([ 'content', 'user' ])
       },
       views: {
         defaultValue: 0,
@@ -46,17 +58,19 @@ export default (sequelize, DataTypes) => {
           // у поста может быть множество комментариев
           Post.hasMany(models.Comment, { foreignKey: 'post_id' })
 
-          // пост может быть постом пользователя
-          Post.hasOne(models.UserPost, { foreignKey: 'post_id' })
-
-          // либо пост может быть постом с материалоами
-          Post.hasOne(models.ContentPost, { foreignKey: 'post_id' })
-
           // Множество постов могут принадлежать к множеству программ
           Post.belongsToMany(models.Program, { through: 'programs_posts', foreignKey: 'post_id' })
 
           // Посту может быть выставлена куча оценок
           Post.belongsToMany(models.NPS, { through: 'nps_posts', foreignKey: 'post_id', as: 'Nps' })
+
+          
+
+          // пост может быть постом пользователя
+          Post.hasOne(models.UserPost, { foreignKey: 'post_id' })
+
+          // либо пост может быть постом с материалоами
+          Post.hasOne(models.ContentPost, { foreignKey: 'post_id' })
         }
       }
     }
