@@ -1,4 +1,10 @@
 module.exports = function (sequelize, DataTypes) {
+  /**
+   * Модель описывает ответы на задание.
+   * Сссылается на пост пользователя (который содержит непосредственный ответ на задание)
+   * К ответу на задание может быть привязана запись о доходе (Income)
+   * Ответ на задание относится к записи задания
+   */
   var TaskReply = sequelize.define(
     'TaskReply', 
     {}, 
@@ -16,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
           // ответ оносится к заданию
           TaskReply.belongsTo(models.TaskEntry, { foreignKey: 'task_entry_id' })
 
-          // У цели есть доход
+          // Количество денег, заработанных на задании
           TaskReply.hasOne(models.Income, { foreignKey: 'task_reply_id' })
         }
       }

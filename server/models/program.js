@@ -1,23 +1,32 @@
 export default (sequelize, DataTypes) => {
+  /*
+    Модель описывает программы БМ.
+    Для каждого потока ЦЕХа или МЗС создается отдельная запись, чтобы грамотно сегментировать пользователей по программам
+  */
   const Program = sequelize.define(
     'Program',
     {
+      // наименование программы с порядковым номером
       title: {
         allowNull: false,
         type: DataTypes.STRING
       },
+      // англоязычное наименование программы, без пробелов и смс, для построения ссылок и пр.
       alias: {
         allowNull: false,
         type: DataTypes.STRING
       },
+      // дата начала проведения программы
       start_at: {
         allowNull: false,
         type: DataTypes.DATE
       },
+      // дата окончания программы
       finish_at: {
         allowNull: false,
         type: DataTypes.DATE
       },
+      // на всякий случай - флаг активности программы.
       is_enabled: {
         defaultValue: true,
         type: DataTypes.BOOLEAN
@@ -43,13 +52,13 @@ export default (sequelize, DataTypes) => {
           // группа может принадлежать программе
           Program.belongsToMany(models.Group, { foreignKey: 'program_id', as: 'Groups', through: 'programs_groups' })
 
-          // ПРограмме выставляют оценки
+          // Программе выставляют оценки
           Program.belongsToMany(models.NPS, { through: 'nps_program', foreignKey: 'program_id', as: 'Nps' })
 
           // в программе много заданий
           Program.hasMany(models.TaskEntry, { foreignKey: 'program_id', as: 'Tasks' })
 
-          //
+          // В программе есть много пользователей со своими пролями
           Program.hasMany(models.UserProgramRole, { foreignKey: 'program_id' }) 
         }
       }

@@ -1,4 +1,8 @@
 export default (sequelize, DataTypes) => {
+  /*
+    Модель описывает поведение тренерских групп. 
+    Пока что модель не содержить уникальных полей, но это сделано для будущего расширения (на всякий случай)
+  */
   const CoachGroup = sequelize.define(
     'CoachGroup',
     {
@@ -20,6 +24,7 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
+          // Группы привязана к родительской записи - к самой группе
           CoachGroup.belongsTo(models.Group, { foreignKey: { field: 'group_id', primaryKey: true, allowNull: false } })
         }
       }

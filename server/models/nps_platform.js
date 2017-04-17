@@ -1,4 +1,8 @@
 export default (sequelize, DataTypes) => {
+  /*
+    NPS по платформе.
+    Вынесена в отдельную модель чтобы не засорять основную модель NPS
+  */  
   const NPSPlatform = sequelize.define(
     'NPSPlatform',
     {
@@ -20,6 +24,7 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
+          // указание на родительский нпс
           NPSPlatform.belongsTo(models.NPS, { foreignKey: 'nps_id' })
         }
       }

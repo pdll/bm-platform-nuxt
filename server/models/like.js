@@ -1,4 +1,8 @@
 export default (sequelize, DataTypes) => {
+  /*  
+    Модель описывает ссистему лайков.
+    Пока что лайки ставязтся только к комментариям и к постам.
+  */  
   const Like = sequelize.define(
     'Like',
     {},

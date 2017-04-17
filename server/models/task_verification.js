@@ -1,7 +1,14 @@
 module.exports = function (sequelize, DataTypes) {
+  /**
+   * Модель, описывающая статус проверки ответа на задание.
+   * С помощью этой модели можно привязывать ответы на задания к определенным "проверяющим" волонтерам и т.д.
+   */
   var TaskVerify = sequelize.define(
     'TaskVerify', 
     {
+      /**
+       * статус проверки
+       */
       status: {
         defaultValue: 'assigned', 
         type: DataTypes.ENUM([ 'assigned', 'pending', 'approved', 'rejected' ])

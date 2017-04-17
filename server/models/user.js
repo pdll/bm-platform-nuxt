@@ -1,5 +1,7 @@
 export default (sequelize, DataTypes) => {
-
+  /* 
+    Модель описывает пользователя системы
+  */
 	const User = sequelize.define(
     'User', 
     {
@@ -76,7 +78,7 @@ export default (sequelize, DataTypes) => {
           // У пользователя может быть много отметок с оценкой
           User.belongsToMany(models.NPS, { through: 'nps_users', foreignKey: 'user_id', as: 'Nps' })
 
-          //
+          // Пользователь может быть автором многих оценок
           User.hasMany(models.NPS, { foreignKey: 'user_id', as: 'NpsAuthor' })
 
           // Юзер может быть автором многих заданий

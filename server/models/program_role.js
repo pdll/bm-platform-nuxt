@@ -1,13 +1,20 @@
 export default (sequelize, DataTypes) => {
+  /*
 
+    Модель ролей в программах МЗС, ЦЕХ и т.д.
+    Например Тренер, Волонтер, Студент и т.д.
+
+  */
 	const ProgramRole = sequelize.define(
     'ProgramRole', 
     {
+      // имя роли. Кириллицей, но, наверное, надо будет сделать еще и alias
       name: {
         unique: true,
         allowNull: false,
         type: DataTypes.STRING
       },
+      // флаг активности
       is_enabled: {
         defaultValue: true,
         type: DataTypes.BOOLEAN
@@ -21,8 +28,8 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
-          ProgramRole.hasMany(models.ProgramRole, { foreignKey: 'program_role_id' })
-
+          // Каждую роль может иметь много пользователей
+          ProgramRole.hasMany(models.UserProgramRole, { foreignKey: 'program_role_id' })
         }
       }
     }

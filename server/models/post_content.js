@@ -1,7 +1,12 @@
 export default (sequelize, DataTypes) => {
+  /*
+    Посты с материалами. 
+    Надо прикрепить к ним планы подписки и прочее.
+  */
   const ContentPost = sequelize.define(
     'ContentPost',
     {
+      // указание на родительский пост, является первичным ключом
       post_id: {
         primaryKey: true,
         field: 'post_id',
@@ -18,6 +23,7 @@ export default (sequelize, DataTypes) => {
       underscored: true,
       classMethods: {
         associate: (models) => {
+          // указание на родительский пост, является первичным ключом
           ContentPost.belongsTo(models.Post, { foreignKey: 'post_id' })
         }
       }

@@ -1,4 +1,7 @@
 export default (sequelize, DataTypes) => {
+  /*
+    Модель описывает сбор данных NPS
+  */
   const NPS = sequelize.define(
     'NPS',
     {
@@ -14,9 +17,11 @@ export default (sequelize, DataTypes) => {
       score_3: {
         type: DataTypes.INTEGER
       },
+      // тело отзыва
       body: {
         type: DataTypes.TEXT
       },
+      // id для миграции, потом можно будет это поле убрать
       migration_id: {
         type: DataTypes.INTEGER
       }
@@ -47,7 +52,8 @@ export default (sequelize, DataTypes) => {
           // Запись рейтинга может быть привязана к занятию программы
           NPS.belongsToMany(models.Group, { through: 'nps_group', foreignKey: 'nps_id', as: 'GroupNps' })
 
-          NPS.hasMany(models.NPS, { foreignKey: 'nps_id', as: 'PlatformNps' })
+          // так же есть NPS по платформе
+          NPS.hasMany(models.NPSPlatform, { foreignKey: 'nps_id', as: 'PlatformNps' })
         }
       }
     }

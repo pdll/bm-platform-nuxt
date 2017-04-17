@@ -47,13 +47,10 @@ export default (sequelize, DataTypes) => {
           Post.hasMany(models.Comment, { foreignKey: 'post_id' })
 
           // пост может быть постом пользователя
-          // Post.hasOne(models.UserPost, { foreignKey: 'post_id' })
-
-          // либо пост может быть постом с заданием
-          // Post.hasOne(models.TaskPost, { foreignKey: 'post_id' })
+          Post.hasOne(models.UserPost, { foreignKey: 'post_id' })
 
           // либо пост может быть постом с материалоами
-          // Post.hasOne(models.ContentPost, { foreignKey: 'post_id' })
+          Post.hasOne(models.ContentPost, { foreignKey: 'post_id' })
 
           // Множество постов могут принадлежать к множеству программ
           Post.belongsToMany(models.Program, { through: 'programs_posts', foreignKey: 'post_id' })

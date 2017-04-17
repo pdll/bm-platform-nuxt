@@ -1,14 +1,26 @@
 export default (sequelize, DataTypes) => {
+  /*
+    КМодель комментариев.
+    Пока что подразумевается, что комментарии могут быть оставлены только постам.
+    parent_id указывает на «родительский» комметарий
+  */
   const Comment = sequelize.define(
     'Comment',
     {
       content: {
         type: DataTypes.TEXT
       },
+      /*
+        Указывает на удаление комментария.
+        При true дочерние элементы комментарии скрываются
+      */
       is_blocked: {
         defaultValue: false,
         type: DataTypes.BOOLEAN
       },
+      /*
+        Скрытый комментарий или нет
+      */
       is_visible: {
         defaultValue: true,
         type: DataTypes.BOOLEAN

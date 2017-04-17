@@ -1,9 +1,13 @@
 export default (sequelize, DataTypes) => {
-
+  /*
+    Модель описывает города.
+    Пока что город привязывается только к участию пользователя в программе.
+  */
 	const City = sequelize.define(
     'City',
     {
       name: {
+        unique: true,
         type: DataTypes.STRING
       }
     },
