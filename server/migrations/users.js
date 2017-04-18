@@ -34,7 +34,11 @@ export default async (old, models) => {
       if (el.current_program || el.all_programs) {
         let city_id = null
         if (el.program_city) {
-          let cityObj = await models.City.findOne({ name: el.program_city })
+          let cityObj = await models.City.findOne({
+            where: {
+              name: { $like: el.program_city } 
+            }
+          })
           city_id = cityObj.get('id')
         }
 
@@ -88,6 +92,6 @@ export default async (old, models) => {
 
       count++
     } catch (err) { console.error(err) }
-    console.log('total users: ', count)
+    // console.log('total users: ', count)
   })  
 }

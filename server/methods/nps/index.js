@@ -24,6 +24,48 @@ const resultsCities = async ctx => {
   if (type === 'class') {}
 
   try {
+    console.log()
+    let cities = await models.City.findAll({
+      attributes: [
+        'id',
+        'name',
+        [ orm.fn('count', orm.col('UserPrograms.User.NpsAuthor.id')), 'count' ]
+      ],
+      include: [
+        {
+          attributes: [],
+          model: models.UserProgram,
+          include: [
+            {
+              attributes: [],
+              model: models.User,
+              include: [ 
+                {
+                  attributes: [],
+                  as: 'NpsAuthor',
+                  model: models.NPS,
+                  include: [ 
+                    {
+                      attributes: [],
+                      as: 'ProgramClassNps',
+                      model: models.ProgramClass,
+                      through: {
+                        attributes: []
+                      }
+                    }
+                  ] 
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      group: [ orm.col('id') ]
+    })
+    // let [ cities ] = await orm.query(
+    //   "SELECT count(`NPS`.`id`) AS `count`, `User.Programs.UserProgram`.`city_id` AS `city_id` FROM `nps` AS `NPS` LEFT OUTER JOIN `users` AS `User` ON `NPS`.`user_id` = `User`.`id` INNER JOIN (`users_programs` AS `User.Programs.UserProgram` INNER JOIN `programs` AS `User.Programs` ON `User.Programs`.`id` = `User.Programs.UserProgram`.`program_id`) ON `User`.`id` = `User.Programs.UserProgram`.`user_id` GROUP BY `User.Programs.UserProgram`.`city_id`",
+    // )
+
     ctx.body = { cities }
   } catch (e) {
     console.log(e)

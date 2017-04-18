@@ -35,7 +35,10 @@ router.bridge('/api', [ initRoutes ], router => {
   // apply account routes
   router.bridge('/account', accountRoutes)
 
-  // apply feed routes
+  /**
+   * bridge позволяет применять массив из middleware'ов на набор путей перед тем, как провалиться по ним
+   * Это позволяет по пути прохождения в роут записывать в контекст нужные переменные или запрощать доступ и т.д.
+   */
   router.bridge('/feed', feedRoutes)
 
   router.bridge('/nps', npsRoutes)
@@ -63,7 +66,7 @@ const migrate = async () => {
   /**
    * Третья волна миграций
    */
-  await migrations.feedback(ormOld)
+  // await migrations.feedback(ormOld)
 }
 
 orm.sync()
