@@ -1,22 +1,24 @@
-# bm-nuxt
+# Платформа БМ
 
-> Nuxt.js project
+## Установка
 
-## Build Setup
+1. Клонируем репозиторий
+2. Создаем базу данных bm_platform
+  ```
+  create database bm_platform;
+  ```
+3. Импортирем дамп базы данных из
+  `
+  bm_platform.sql
+  `  
+4. `npm i`
+5. Для запуска проекта `npm run dev`  
 
-``` bash
-# install dependencies
-$ npm install # Or yarn install
+## Информация
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
+1. client - папка с клиенткой стороной (vue.js + nuxt.js) - в данный момент отключен
+2. server - папка с сервнерной стороной - koa2
+    1. methods - папка с методами путей.
+    2. migrations - папка с миграциями. Лучше не лезть и не трогать. Описывает миграции со старой базы
+    3. models - модели для новой базы данных. Каждая модель закомментирована. Если возникают вопросы - спрашивайте в слаке, все объясню.
+    4. routes - папка, в которой собраны все объявления путей.
